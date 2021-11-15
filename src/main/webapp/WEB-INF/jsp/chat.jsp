@@ -29,12 +29,8 @@
 			height: 500px;
 			overflow: auto;
 		}
-		.chating .me{
-			color: #F6F6F6;
-			text-align: right;
-		}
-		.chating .others{
-			color: #FFE400;
+		.chating p{
+			color: #fff;
 			text-align: left;
 		}
 		input{
@@ -57,29 +53,13 @@
 
 	function wsEvt() {
 		ws.onopen = function(data){
-			//소켓이 열리면 동작
+			//소켓이 열리면 초기화 세팅하기
 		}
 
 		ws.onmessage = function(data) {
-			//메시지를 받으면 동작
 			var msg = data.data;
 			if(msg != null && msg.trim() != ''){
-				var d = JSON.parse(msg);
-				if(d.type == "getId"){
-					var si = d.sessionId != null ? d.sessionId : "";
-					if(si != ''){
-						$("#sessionId").val(si);
-					}
-				}else if(d.type == "message"){
-					if(d.sessionId == $("#sessionId").val()){
-						$("#chating").append("<p class='me'>나 :" + d.msg + "</p>");
-					}else{
-						$("#chating").append("<p class='others'>" + d.userName + " :" + d.msg + "</p>");
-					}
-
-				}else{
-					console.warn("unknown type!")
-				}
+				$("#chating").append("<p>" + msg + "</p>");
 			}
 		}
 
@@ -103,21 +83,15 @@
 	}
 
 	function send() {
-		var option ={
-			type: "message",
-			sessionId : $("#sessionId").val(),
-			userName : $("#userName").val(),
-			msg : $("#chatting").val()
-		}
-		ws.send(JSON.stringify(option))
+		var uN = $("#userName").val();
+		var msg = $("#chatting").val();
+		ws.send(uN+" : "+msg);
 		$('#chatting').val("");
 	}
 </script>
 <body>
 	<div id="container" class="container">
 		<h1>채팅</h1>
-		<input type="hidden" id="sessionId" value="">
-
 		<div id="chating" class="chating">
 		</div>
 
