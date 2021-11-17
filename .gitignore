@@ -1,6 +1,6 @@
 /.gradle/
 /.idea/
-
+.DS_Store
 # DB Setting
 src/main/resources/application-datasource.properties
 

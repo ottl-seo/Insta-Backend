@@ -1,6 +1,7 @@
 package efub.insta.domain;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,16 @@ public class Post {
 
     @Column
     private String filePath;
+
+    @Builder
+    public Post(User user, String content){
+        this.user = user;
+        this.content = content;
+    }
+
+    public void updateImage(Long fileSize, String originalFileName, String filePath){
+        this.fileSize = fileSize;
+        this.originalFileName = originalFileName;
+        this.filePath = filePath;
+    }
 }
