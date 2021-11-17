@@ -1,6 +1,5 @@
 package efub.insta.service;
 
-import efub.insta.domain.Image;
 import efub.insta.domain.Post;
 import efub.insta.domain.PostRepository;
 import efub.insta.domain.UserRepository;
