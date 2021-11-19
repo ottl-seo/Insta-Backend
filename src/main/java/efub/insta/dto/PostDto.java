@@ -3,7 +3,9 @@ package efub.insta.dto;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import efub.insta.domain.Post;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class PostDto {
     private Long postNo;
