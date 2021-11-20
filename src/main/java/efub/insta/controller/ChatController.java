@@ -1,15 +1,28 @@
 package efub.insta.controller;
 
+import efub.insta.dto.ChatRoomDto;
+import efub.insta.service.ChatService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+import java.util.List;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/chat")
 public class ChatController {
-    @RequestMapping("/chat")
-    public ModelAndView chat() {
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("chat");
-        return mv;
+    //@Autowired
+    private final ChatService chatService;
+
+    @PostMapping
+    public ChatRoomDto createRoom(@RequestParam String name){
+        return chatService.createRoom(name);
+    }
+    @GetMapping
+    public List<ChatRoomDto> findAllRoom(){
+        return chatService.findAllRoom();
     }
 }
