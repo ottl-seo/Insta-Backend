@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
 @CrossOrigin(origins = "*")
+@RestController
 @RequestMapping
 public class PostController {
 
@@ -45,6 +45,8 @@ public class PostController {
         postService.updateLike(postNo, userNo);
         return ResponseEntity.ok("ok");
     }
+
+
     @PostMapping("api/posts")
     public String createPost(@RequestParam(value = "image") MultipartFile image,
                              @RequestParam(value = "requestDto") String requestDtoString) throws Exception{
@@ -52,6 +54,7 @@ public class PostController {
         String postNo = postService.createPost(requestDto, image);
         return postNo;
     }
+
     /*테스트용 좋아요 테이블 전체 출력
     @GetMapping("/likeList")
     public List<LikeDto> getLikeList(){
