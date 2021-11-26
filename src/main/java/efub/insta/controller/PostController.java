@@ -1,15 +1,19 @@
 package efub.insta.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import efub.insta.dto.LikeDto;
 import efub.insta.dto.PostDto;
 import efub.insta.dto.UserDto;
 import efub.insta.service.PostService;
+import efub.insta.web.dto.PostRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping
 public class PostController {
@@ -40,6 +44,15 @@ public class PostController {
     public ResponseEntity<String> likePost(@PathVariable("postNo") Long postNo, @PathVariable("userNo") Long userNo){
         postService.updateLike(postNo, userNo);
         return ResponseEntity.ok("ok");
+    }
+
+
+    @PostMapping("api/posts")
+    public String createPost(@RequestParam(value = "image") MultipartFile image,
+                             @RequestParam(value = "requestDto") String requestDtoString) throws Exception{
+        PostRequestDto requestDto = new ObjectMapper().readValue(requestDtoString, PostRequestDto.class);
+        String postNo = postService.createPost(requestDto, image);
+        return postNo;
     }
 
     /*테스트용 좋아요 테이블 전체 출력
