@@ -1,14 +1,17 @@
 package efub.insta.dto;
 
+import efub.insta.domain.ChatRoom;
 import efub.insta.service.ChatService;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
+@Setter
 public class ChatRoomDto {
     private String roomNo;
     private String name;
@@ -16,10 +19,16 @@ public class ChatRoomDto {
     private Set<WebSocketSession> sessions = new HashSet<>();
 
     @Builder
-    public ChatRoomDto(String roomNo, String name){
-        this.roomNo = roomNo;
-        this.name = name;
+    public ChatRoomDto(ChatRoom chatRoom){
+        this.roomNo = chatRoom.getRoomNo();
+        this.name = chatRoom.getName();
+        chatRoom.builder()
+                .roomNo(roomNo)
+                .name(name)
+                .build();
     }
+    // 이렇게 하면 service에서 createRoom 할 때 오류남
+
     public void handleActions(WebSocketSession session, ChatMsgDto chatMsgDto, ChatService chatService){
         if(chatMsgDto.getType().equals(ChatMsgDto.MsgType.ENTER)){
             sessions.add(session);
