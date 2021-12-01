@@ -19,7 +19,7 @@ repositories {
 }
 bootJar{
 	archiveBaseName='-'
-	archiveFileName='insta.jar'
+	archiveFileName='insta-1.jar'
 	archiveVersion="0.0.0"
 	jar.enabled=true
 }
