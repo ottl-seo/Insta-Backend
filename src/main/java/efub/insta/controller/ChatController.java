@@ -1,29 +1,25 @@
 package efub.insta.controller;
 
 import efub.insta.domain.ChatRoom;
+import efub.insta.dto.ChatMsgDto;
 import efub.insta.dto.ChatRoomDto;
-import efub.insta.service.ChatService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "*")
-@RequestMapping("/chat")
 public class ChatController {
-    //@Autowired
-    private final ChatService chatService;
 
-    @PostMapping
-    public ChatRoom createRoom(@RequestParam String name){
-        return chatService.createRoom(name);
-    }
-    @GetMapping("/roomList")
-    public List<ChatRoomDto> findAllRoom(){
-        return chatService.getRoomList();
-    }
+    private final SimpMessageSendingOperations messagingTemplate;
 
+    @MessageMapping("/chat/message")
+    public void message(ChatMsgDto message) {
+        if (ChatMsgDto.MsgType.ENTER.equals(message.getType()))
+            message.setContent(message.getSender() + "님이 입장하셨습니다.");
+        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomNo(), message);
+    }
 }

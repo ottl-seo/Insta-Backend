@@ -17,7 +17,12 @@ configurations {
 repositories {
 	mavenCentral()
 }
-
+bootJar{
+	archiveBaseName='-'
+	archiveFileName='insta.jar'
+	archiveVersion="0.0.0"
+	jar.enabled=true
+}
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -27,7 +32,13 @@ dependencies {
 	implementation 'javax.servlet:jstl'
 	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
 	implementation 'com.amazonaws:aws-java-sdk-s3'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+	implementation 'org.webjars.bower:bootstrap:4.3.1'
+	implementation 'org.webjars.bower:vue:2.5.16'
+	implementation 'org.webjars.bower:axios:0.17.1'
+	implementation 'org.webjars:sockjs-client:1.1.2'
+	implementation 'org.webjars:stomp-websocket:2.3.3-1'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
