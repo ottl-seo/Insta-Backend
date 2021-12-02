@@ -13,10 +13,8 @@ import java.util.UUID;
 public class ChatRoomDto {
     private String roomNo;
     private String roomName;
-    private User user1;
-    private User user2;
-    private boolean user1Flag;
-    private boolean user2Flag;
+    private User sender;
+    private User receiver;
 
     public static ChatRoomDto create(String name){
         ChatRoomDto chatRoom = new ChatRoomDto();
@@ -25,8 +23,10 @@ public class ChatRoomDto {
         return chatRoom;
     }
 
+
     public void setUserInfo(ChatRoom chatRoom){
-        this.user1 = chatRoom.getSender();
-        this.user2 = chatRoom.getReceiver();
+        this.sender = chatRoom.getSender();
+        this.receiver = chatRoom.getReceiver();
     }
+
 }
