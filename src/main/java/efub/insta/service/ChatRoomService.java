@@ -1,11 +1,10 @@
 package efub.insta.service;
 
 import efub.insta.domain.*;
-import efub.insta.dto.ChatMsgDto;
+import efub.insta.dto.ChatMessageDto;
 import efub.insta.dto.ChatRoomDto;
 import efub.insta.dto.ChatRoomResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
-    private final ChatMsgRepository chatMsgRepository;
+    private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
 
 
@@ -75,24 +74,23 @@ public class ChatRoomService {
     public List<ChatRoomResponseDto> findAllRooms(){
         return chatRoomRepository.findAll().stream().map(room -> new ChatRoomResponseDto(room)).collect(Collectors.toList());
     }
-
-    public List<ChatMsgDto> getMsgList(String roomNo){
-        List<ChatMsgDto> chatMsgDtoList = chatMsgRepository.findAll().stream().map(chatMsg -> new ChatMsgDto(chatMsg))
-                .filter(chatMsg -> chatMsg.getRoomNo().equals(roomNo)).sorted(Comparator.comparing(ChatMsgDto::getSendTime))
+    public List<ChatMessageDto> getMsgList(String roomNo){
+        List<ChatMessageDto> chatMessageDtoList = chatMessageRepository.findAll().stream().map(chatMessage -> new ChatMessageDto(chatMessage))
+                .filter(chatMessage -> chatMessage.getChatRoom().equals(roomNo)).sorted(Comparator.comparing(ChatMessageDto::getSendTime))
                 .collect(Collectors.toList());
-        return chatMsgDtoList;
+        return chatMessageDtoList;
     }
 
     public String getLastMsg(String roomNo){
-        List<ChatMsgDto> chatMsgDtoList = getMsgList(roomNo);
-        ChatMsgDto lastMsg = chatMsgDtoList.get(chatMsgDtoList.size() - 1);
-        return lastMsg.getContent();
+        List<ChatMessageDto> chatMessageDtoList = getMsgList(roomNo);
+        ChatMessageDto lastMsg = chatMessageDtoList.get(chatMessageDtoList.size() - 1);
+        return lastMsg.getMessage();
     }
 
     public List<String[]> getLastMsgList(){
-        List<ChatRoomDto> chatRoomList = chatRoomRepository.findAll().stream().map(chatRoom -> new ChatRoomDto(chatRoom)).collect(Collectors.toList());
+        List<ChatRoomResponseDto> chatRoomList = chatRoomRepository.findAll().stream().map(chatRoom -> new ChatRoomResponseDto(chatRoom)).collect(Collectors.toList());
         List<String[]> chatInfoList = new ArrayList<>();
-        for(ChatRoomDto chatRoomDto : chatRoomList){
+        for(ChatRoomResponseDto chatRoomDto : chatRoomList){
             String[] info = new String[2];
             info[0] = chatRoomDto.getReceiver().getUserId();
             info[1] = getLastMsg(chatRoomDto.getRoomNo());

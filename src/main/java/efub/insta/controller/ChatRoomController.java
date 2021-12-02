@@ -1,7 +1,7 @@
 package efub.insta.controller;
 
 
-import efub.insta.dto.ChatMsgDto;
+import efub.insta.dto.ChatMessageDto;
 import efub.insta.dto.ChatRoomResponseDto;
 import efub.insta.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class ChatRoomController {
     }
 
     @GetMapping("chat/list/{roomNo}")
-    public List<ChatMsgDto> getChatList(@PathVariable String roomNo){
+    public List<ChatMessageDto> getChatList(@PathVariable String roomNo){
         return chatRoomService.getMsgList(roomNo);
     }
 

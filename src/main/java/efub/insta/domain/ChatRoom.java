@@ -3,17 +3,17 @@ package efub.insta.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "chat_room_new")
 public class ChatRoom {
-    // chatMsg랑 chatRoom JOIN
-    // chatMsg랑 ChatUser JOIN
     @Id
     @Column(name = "room_no")
     private String roomNo;
