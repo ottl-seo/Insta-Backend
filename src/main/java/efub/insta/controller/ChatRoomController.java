@@ -12,7 +12,6 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/chat")
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
@@ -28,7 +27,7 @@ public class ChatRoomController {
         return chatRoomResponseDtos;
     }
 
-    @GetMapping("/list/{roomNo}")
+    @GetMapping("chat/list/{roomNo}")
     public List<ChatMsgDto> getChatList(@PathVariable String roomNo){
         return chatRoomService.getMsgList(roomNo);
     }
