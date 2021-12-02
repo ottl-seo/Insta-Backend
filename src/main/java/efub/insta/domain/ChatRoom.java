@@ -18,11 +18,11 @@ public class ChatRoom {
     private String roomNo;
 
     @Column(name = "room_name")
-    private String name;
+    private String roomName;
 
     @Builder
-    public ChatRoom(String roomNo, String name){
+    public ChatRoom(String roomNo, String roomName){
         this.roomNo = roomNo;
-        this.name = name;
+        this.roomName = roomName;
     }
 }
