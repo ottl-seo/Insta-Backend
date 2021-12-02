@@ -23,7 +23,6 @@ public class ChatRoomDto {
         return chatRoom;
     }
 
-
     public void setUserInfo(ChatRoom chatRoom){
         this.sender = chatRoom.getSender();
         this.receiver = chatRoom.getReceiver();

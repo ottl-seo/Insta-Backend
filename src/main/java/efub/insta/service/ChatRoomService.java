@@ -1,26 +1,25 @@
 package efub.insta.service;
 
-import efub.insta.domain.ChatRoom;
-import efub.insta.domain.ChatRoomRepository;
-import efub.insta.domain.User;
-import efub.insta.domain.UserRepository;
+import efub.insta.domain.*;
+import efub.insta.dto.ChatMsgDto;
 import efub.insta.dto.ChatRoomDto;
 import efub.insta.dto.ChatRoomResponseDto;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.matcher.CollectionErasureMatcher;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMsgRepository chatMsgRepository;
     private final UserRepository userRepository;
 
 
@@ -79,6 +78,13 @@ public class ChatRoomService {
     @Transactional
     public List<ChatRoomResponseDto> findAllRooms(){
         return chatRoomRepository.findAll().stream().map(room -> new ChatRoomResponseDto(room)).collect(Collectors.toList());
+    }
+
+    public List<ChatMsgDto> getMsgList(String roomNo){
+        List<ChatMsgDto> chatMsgDtoList = chatMsgRepository.findAll().stream().map(chatMsg -> new ChatMsgDto(chatMsg))
+                .filter(chatMsg -> chatMsg.getRoomNo().equals(roomNo)).sorted(Comparator.comparing(ChatMsgDto::getSendTime))
+                .collect(Collectors.toList());
+        return chatMsgDtoList;
     }
 
 }

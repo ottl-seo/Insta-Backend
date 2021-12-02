@@ -1,19 +1,18 @@
 package efub.insta.controller;
 
 
+import efub.insta.dto.ChatMsgDto;
 import efub.insta.dto.ChatRoomResponseDto;
 import efub.insta.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/chat")
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
@@ -24,8 +23,13 @@ public class ChatRoomController {
     }
 
     @GetMapping("chat/roomList")
-    public List<ChatRoomResponseDto> findAllRooms(){
+    public List<ChatRoomResponseDto> findAllRooms() {
         List<ChatRoomResponseDto> chatRoomResponseDtos = chatRoomService.findAllRooms();
         return chatRoomResponseDtos;
+    }
+
+    @GetMapping("/list/{roomNo}")
+    public List<ChatMsgDto> getChatList(@PathVariable String roomNo){
+        return chatRoomService.getMsgList(roomNo);
     }
 }
