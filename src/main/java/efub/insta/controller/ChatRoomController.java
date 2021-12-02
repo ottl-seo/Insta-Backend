@@ -1,37 +1,31 @@
 package efub.insta.controller;
 
-import efub.insta.dto.ChatRoomDto;
-import efub.insta.repo.ChatRoomRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import efub.insta.dto.ChatRoomResponseDto;
+import efub.insta.service.ChatRoomService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-@Controller
-@RequestMapping("/chat")
+@RestController
 public class ChatRoomController {
+    private final ChatRoomService chatRoomService;
 
-    private final ChatRoomRepository chatRoomRepository;
-
-    @GetMapping("/rooms")
-    @ResponseBody
-    public List<ChatRoomDto> room() {
-        return chatRoomRepository.findAllRoom();
+    @GetMapping("/chat/senders/{userId}")
+    public List<ChatRoomResponseDto> findByChatRoomBySender(@PathVariable String userId){
+        List<ChatRoomResponseDto> chatRoomResponseDtos = chatRoomService.findAllRoomsBySender(userId);
+        return chatRoomResponseDtos;
     }
 
-    @PostMapping("/room")
-    @ResponseBody
-    public ChatRoomDto createRoom(@RequestParam String name) {
-        return chatRoomRepository.createChatRoom(name);
-    }
-
-    @GetMapping("/room/{roomId}")
-    @ResponseBody
-    public ChatRoomDto roomInfo(@PathVariable String roomId) {
-        return chatRoomRepository.findRoomById(roomId);
+    @GetMapping("chat/roomList")
+    public List<ChatRoomResponseDto> findAllRooms(){
+        List<ChatRoomResponseDto> chatRoomResponseDtos = chatRoomService.findAllRooms();
+        return chatRoomResponseDtos;
     }
 }
