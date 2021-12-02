@@ -10,12 +10,13 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Getter @Setter
+@Builder
 public class ChatRoomDto {
     private String roomNo;
     private String roomName;
     private User sender;
     private User receiver;
-
+/*
     public static ChatRoomDto create(String name){
         ChatRoomDto chatRoom = new ChatRoomDto();
         chatRoom.setRoomNo(UUID.randomUUID().toString());
@@ -23,9 +24,20 @@ public class ChatRoomDto {
         return chatRoom;
     }
 
+ */
+
     public void setUserInfo(ChatRoom chatRoom){
         this.sender = chatRoom.getSender();
         this.receiver = chatRoom.getReceiver();
     }
+/*
+    @Builder
+    public ChatRoomDto(ChatRoom chatRoom){
+        this.roomNo = chatRoom.getRoomNo();
+        this.roomName = chatRoom.getRoomName();
+        this.sender = chatRoom.getSender();
+        this.receiver = chatRoom.getReceiver();
+    }
 
+ */
 }

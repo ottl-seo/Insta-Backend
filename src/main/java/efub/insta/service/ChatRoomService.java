@@ -1,15 +1,13 @@
 package efub.insta.service;
 
 import efub.insta.domain.*;
-import efub.insta.dto.ChatMsgDto;
+import efub.insta.dto.ChatMessageDto;
 import efub.insta.dto.ChatRoomDto;
 import efub.insta.dto.ChatRoomResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +17,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
-    private final ChatMsgRepository chatMsgRepository;
+    private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
 
 
@@ -27,14 +25,6 @@ public class ChatRoomService {
     public List<ChatRoomResponseDto> findAllRoomsBySender(String userId){
         List<ChatRoom> rooms = chatRoomRepository.findBySenderUserId(userId);
 
-
-
-
-//        //Optional<User> user = userRepository.findById(userNo);
-//        List<ChatRoom> chatRoomList = chatRoomRepository.findByUserNo(userNo);
-//        List<ChatRoomResponseDto> roomResponseDtoList = new ArrayList<>();
-//
-//        List<ChatRoom> chatRooms = chatRoomRepository.findByUserNo(userNo);
         return rooms.stream()
                 .map(ChatRoomResponseDto::new)
                 .collect(Collectors.toList());
@@ -80,11 +70,11 @@ public class ChatRoomService {
         return chatRoomRepository.findAll().stream().map(room -> new ChatRoomResponseDto(room)).collect(Collectors.toList());
     }
 
-    public List<ChatMsgDto> getMsgList(String roomNo){
-        List<ChatMsgDto> chatMsgDtoList = chatMsgRepository.findAll().stream().map(chatMsg -> new ChatMsgDto(chatMsg))
-                .filter(chatMsg -> chatMsg.getRoomNo().equals(roomNo)).sorted(Comparator.comparing(ChatMsgDto::getSendTime))
+    public List<ChatMessageDto> getMsgList(String roomNo){
+        List<ChatMessageDto> chatMessageDtoList = chatMessageRepository.findAll().stream().map(chatMessage -> new ChatMessageDto(chatMessage))
+                .filter(chatMessage -> chatMessage.getChatRoom().equals(roomNo)).sorted(Comparator.comparing(ChatMessageDto::getSendTime))
                 .collect(Collectors.toList());
-        return chatMsgDtoList;
+        return chatMessageDtoList;
     }
 
 }
