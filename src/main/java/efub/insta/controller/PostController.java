@@ -55,6 +55,11 @@ public class PostController {
         return postNo;
     }
 
+    @GetMapping("/{postNo}/{userNo}/check")
+    public Boolean isLike(@PathVariable("postNo") Long postNo, @PathVariable("userNo") Long userNo){
+        return postService.checkLike(postNo, userNo);
+    }
+
     /*테스트용 좋아요 테이블 전체 출력
     @GetMapping("/likeList")
     public List<LikeDto> getLikeList(){

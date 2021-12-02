@@ -60,6 +60,13 @@ public class PostService {
         else like.likeChange(like);
     }
 
+    public Boolean checkLike(Long postNo, Long userNo){
+        Optional<User> user = userRepository.findById(userNo);
+        Like like = likeRepository.findByPostNoAndUser(postNo, user.get());
+        if(like == null || like.getDeletedFlag()) return false;
+        else return true;
+    }
+
     /*public List<LikeDto> getLikeUserAllList(){
         return likeRepository.findAll().stream().map(like -> new LikeDto(like)).collect(Collectors.toList());
     }*/
