@@ -32,4 +32,9 @@ public class ChatRoomController {
     public List<ChatMsgDto> getChatList(@PathVariable String roomNo){
         return chatRoomService.getMsgList(roomNo);
     }
+
+    @GetMapping("chat/chatInfo")
+    public List<String[]> getLastChatting(){
+        return chatRoomService.getLastMsgList();
+    }
 }

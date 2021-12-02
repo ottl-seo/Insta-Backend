@@ -2,13 +2,11 @@ package efub.insta.dto;
 
 import efub.insta.domain.ChatRoom;
 import efub.insta.domain.User;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
+@NoArgsConstructor
 @Getter @Setter
 public class ChatRoomDto {
     private String roomNo;
@@ -28,4 +26,10 @@ public class ChatRoomDto {
         this.receiver = chatRoom.getReceiver();
     }
 
+    public ChatRoomDto(ChatRoom chatRoom){
+        this.roomNo = chatRoom.getRoomNo();
+        this.roomName = chatRoom.getRoomName();
+        this.sender = chatRoom.getSender();
+        this.receiver = chatRoom.getReceiver();
+    }
 }

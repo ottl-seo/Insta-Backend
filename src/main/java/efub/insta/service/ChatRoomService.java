@@ -9,9 +9,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -26,8 +24,6 @@ public class ChatRoomService {
     @Transactional
     public List<ChatRoomResponseDto> findAllRoomsBySender(String userId){
         List<ChatRoom> rooms = chatRoomRepository.findBySenderUserId(userId);
-
-
 
 
 //        //Optional<User> user = userRepository.findById(userNo);
@@ -87,4 +83,21 @@ public class ChatRoomService {
         return chatMsgDtoList;
     }
 
+    public String getLastMsg(String roomNo){
+        List<ChatMsgDto> chatMsgDtoList = getMsgList(roomNo);
+        ChatMsgDto lastMsg = chatMsgDtoList.get(chatMsgDtoList.size() - 1);
+        return lastMsg.getContent();
+    }
+
+    public List<String[]> getLastMsgList(){
+        List<ChatRoomDto> chatRoomList = chatRoomRepository.findAll().stream().map(chatRoom -> new ChatRoomDto(chatRoom)).collect(Collectors.toList());
+        List<String[]> chatInfoList = new ArrayList<>();
+        for(ChatRoomDto chatRoomDto : chatRoomList){
+            String[] info = new String[2];
+            info[0] = chatRoomDto.getReceiver().getUserId();
+            info[1] = getLastMsg(chatRoomDto.getRoomNo());
+            chatInfoList.add(info);
+        }
+        return chatInfoList;
+    }
 }
