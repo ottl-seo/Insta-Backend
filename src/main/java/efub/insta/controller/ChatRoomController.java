@@ -16,13 +16,13 @@ import java.util.List;
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
-    @GetMapping("/chat/senders/{userId}")
+    @GetMapping("/senders/{userId}")
     public List<ChatRoomResponseDto> findByChatRoomBySender(@PathVariable String userId){
         List<ChatRoomResponseDto> chatRoomResponseDtos = chatRoomService.findAllRoomsBySender(userId);
         return chatRoomResponseDtos;
     }
 
-    @GetMapping("chat/roomList")
+    @GetMapping("/roomList")
     public List<ChatRoomResponseDto> findAllRooms() {
         List<ChatRoomResponseDto> chatRoomResponseDtos = chatRoomService.findAllRooms();
         return chatRoomResponseDtos;
@@ -33,7 +33,7 @@ public class ChatRoomController {
         return chatRoomService.getMsgList(roomNo);
     }
 
-    @GetMapping("chat/chatInfo")
+    @GetMapping("/chatInfo")
     public List<String[]> getLastChatting(){
         return chatRoomService.getLastMsgList();
     }
