@@ -37,6 +37,19 @@ public class PostService {
     }
 
     @Transactional
+    public String createPostImage(MultipartFile uploadFile, String content) throws Exception{
+        Optional<User> user = userRepository.findById(1L);
+        Post post = new Post(
+                user.get(),
+                content
+        );
+
+        s3Uploader.upload(uploadFile, post);
+        postRepository.save(post);
+        return post.getPostNo().toString();
+    }
+
+    @Transactional
     public List<PostDto> getPostList(){
         return postRepository.findAll().stream().map(post -> new PostDto(post)).collect(Collectors.toList());
     }
@@ -70,4 +83,5 @@ public class PostService {
     /*public List<LikeDto> getLikeUserAllList(){
         return likeRepository.findAll().stream().map(like -> new LikeDto(like)).collect(Collectors.toList());
     }*/
+
 }
