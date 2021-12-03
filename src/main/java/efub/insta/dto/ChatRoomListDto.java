@@ -1,23 +1,20 @@
 package efub.insta.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import efub.insta.domain.ChatMsg;
 import efub.insta.domain.ChatRoom;
-import efub.insta.domain.Like;
-import efub.insta.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class ChatRoomResponseDto {
+public class ChatRoomListDto {
     private String roomNo;
     private String roomName;
     private UserDto sender;
     private UserDto receiver;
-
+    private String contents;
+    private String time;
+//
 //    public void setLastTime(ChatRoom chatRoom, ChatMsg chatMsg){
 //        this.time = "16시간 전";
 //    }
@@ -27,7 +24,7 @@ public class ChatRoomResponseDto {
 //    }
 
     @Builder
-    public ChatRoomResponseDto(ChatRoom chatRoom){
+    public ChatRoomListDto(ChatRoom chatRoom, String contents, String time){
         this.roomNo = chatRoom.getRoomNo();
         this.roomName = chatRoom.getRoomName();
         this.sender = UserDto.builder()
@@ -44,6 +41,7 @@ public class ChatRoomResponseDto {
                 .originalFileName(chatRoom.getReceiver().getOriginalFileName())
                 .filePath(chatRoom.getReceiver().getFilePath())
                 .build();
-
+        this.contents = contents;
+        this.time = time;
     }
 }

@@ -3,12 +3,17 @@ package efub.insta.service;
 import efub.insta.domain.*;
 import efub.insta.dto.ChatMsgDto;
 import efub.insta.dto.ChatRoomDto;
+import efub.insta.dto.ChatRoomListDto;
 import efub.insta.dto.ChatRoomResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,20 +25,55 @@ public class ChatRoomService {
     private final ChatMsgRepository chatMsgRepository;
     private final UserRepository userRepository;
 
+    @Transactional
+    public String calcTime(LocalDateTime before, LocalDateTime after){
+        long time = ChronoUnit.SECONDS.between(before, after);
+        StringBuilder sb=new StringBuilder();
+        String unit = "";
+        if(time>3600*12){
+            time = ChronoUnit.DAYS.between(before, after);
+            unit = "일전";
+        }
+        if(time<(3600*12)){
+            time= ChronoUnit.HOURS.between(before, after);
+            unit = "시간전";
+        }
+        else if(time<3600){
+            time = ChronoUnit.MINUTES.between(before, after);
+
+            unit = "분전";
+        }
+        if(time<60){
+            unit = "초전";
+        }
+
+        sb.append(Long.toString(time)).append(unit);
+
+        return sb.toString();
+    }
 
     @Transactional
-    public List<ChatRoomResponseDto> findAllRoomsBySender(String userId){
+    public List<ChatRoomListDto> findAllRoomsBySender(String userId){
         List<ChatRoom> rooms = chatRoomRepository.findBySenderUserId(userId);
+        List<ChatRoomListDto>  roomResponseDtoList = new ArrayList<>();
+        for(ChatRoom room:rooms){
+            String roomNo = room.getRoomNo();
+            List<ChatMsgDto> chatMsgDtoList = getMsgList(roomNo);
+            String lastContent = chatMsgDtoList.get(chatMsgDtoList.size() - 1).getContent();
+            LocalDateTime time = chatMsgDtoList.get(chatMsgDtoList.size() - 1).getSendTime();
+            LocalDateTime now = LocalDateTime.now();
+            String calcTime = calcTime(time, now);
 
+            ChatRoomListDto chatRoomResponseDto = new ChatRoomListDto(room, lastContent, calcTime);
+            roomResponseDtoList.add(chatRoomResponseDto);
+        }
 
 //        //Optional<User> user = userRepository.findById(userNo);
 //        List<ChatRoom> chatRoomList = chatRoomRepository.findByUserNo(userNo);
 //        List<ChatRoomResponseDto> roomResponseDtoList = new ArrayList<>();
 //
 //        List<ChatRoom> chatRooms = chatRoomRepository.findByUserNo(userNo);
-        return rooms.stream()
-                .map(ChatRoomResponseDto::new)
-                .collect(Collectors.toList());
+        return roomResponseDtoList;
     }
 
     public String createChatRoom(ChatRoomDto chatRoomDto){
@@ -63,13 +103,13 @@ public class ChatRoomService {
 //        }
 //        return chatRoomDtoList;
 //    }
-
-    public ChatRoomResponseDto findRoomByRoomNo(String roomNo){
-        ChatRoom room = chatRoomRepository.findChatRoomByRoomNo(roomNo);
-        ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(room);
-
-        return chatRoomResponseDto;
-    }
+//
+//    public ChatRoomResponseDto findRoomByRoomNo(String roomNo){
+//        ChatRoom room = chatRoomRepository.findChatRoomByRoomNo(roomNo);
+//        ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(room);
+//
+//        return chatRoomResponseDto;
+//    }
 
     @Transactional
     public List<ChatRoomResponseDto> findAllRooms(){

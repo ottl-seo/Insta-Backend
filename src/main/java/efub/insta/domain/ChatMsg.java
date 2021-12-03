@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -35,4 +37,5 @@ public class ChatMsg {
 
     @Column(name = "message")
     private String content; //메시지 내용
+
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -28,7 +29,6 @@ public class ChatRoom {
     @ManyToOne
     @JoinColumn(name = "receiver")
     private User receiver;
-
 
     @Builder
     public ChatRoom(String roomNo, String roomName, User sender, User receiver){
