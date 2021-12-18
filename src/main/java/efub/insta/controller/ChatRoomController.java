@@ -1,41 +1,37 @@
 package efub.insta.controller;
 
-
-import efub.insta.dto.ChatMsgDto;
-import efub.insta.dto.ChatRoomListDto;
-import efub.insta.dto.ChatRoomResponseDto;
-import efub.insta.service.ChatRoomService;
+import efub.insta.dto.ChatRoomDto;
+import efub.insta.repo.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-@RestController
+@Controller
+@RequestMapping("/chat")
 public class ChatRoomController {
-    private final ChatRoomService chatRoomService;
 
-    @GetMapping("senders/{userId}")
-    public List<ChatRoomListDto> findByChatRoomBySender(@PathVariable String userId){
-        List<ChatRoomListDto> chatRoomResponseDtos = chatRoomService.findAllRoomsBySender(userId);
-        return chatRoomResponseDtos;
+    private final ChatRoomRepository chatRoomRepository;
+
+    @GetMapping("/rooms")
+    @ResponseBody
+    public List<ChatRoomDto> room() {
+        return chatRoomRepository.findAllRoom();
     }
 
-    @GetMapping("roomList")
-    public List<ChatRoomResponseDto> findAllRooms() {
-        List<ChatRoomResponseDto> chatRoomResponseDtos = chatRoomService.findAllRooms();
-        return chatRoomResponseDtos;
+    @PostMapping("/room")
+    @ResponseBody
+    public ChatRoomDto createRoom(@RequestParam String name) {
+        return chatRoomRepository.createChatRoom(name);
     }
 
-    @GetMapping("chat/list/{roomNo}")
-    public List<ChatMsgDto> getChatList(@PathVariable String roomNo){
-        return chatRoomService.getMsgList(roomNo);
+    @GetMapping("/room/{roomId}")
+    @ResponseBody
+    public ChatRoomDto roomInfo(@PathVariable String roomId) {
+        return chatRoomRepository.findRoomById(roomId);
     }
-
-    @GetMapping("/chatInfo")
-    public List<String[]> getLastChatting(){
-        return chatRoomService.getLastMsgList();
-    }
-
 }

@@ -55,18 +55,6 @@ public class PostController {
         return postNo;
     }
 
-    @PostMapping("api/posts/images")
-    public String createPostImage(@RequestParam(value = "image") MultipartFile image, @RequestParam(value = "content") String content)throws Exception{
-        String postNo = postService.createPostImage(image, content);
-
-        return postNo;
-    }
-
-    @GetMapping("/{postNo}/{userNo}/check")
-    public Boolean isLike(@PathVariable("postNo") Long postNo, @PathVariable("userNo") Long userNo){
-        return postService.checkLike(postNo, userNo);
-    }
-
     /*테스트용 좋아요 테이블 전체 출력
     @GetMapping("/likeList")
     public List<LikeDto> getLikeList(){

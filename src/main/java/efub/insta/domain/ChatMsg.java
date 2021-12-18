@@ -1,41 +1,25 @@
 package efub.insta.domain;
 
 import efub.insta.dto.ChatMsgDto;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-@Getter
-@Entity
-@NoArgsConstructor
-@Table(name = "chat_message_new")
 public class ChatMsg {
 
     private ChatMsgDto.MsgType type; //메시지 타입
 
-    @Id
-    @Column(name = "message_no")
-    private Long messageNo;
+    @ManyToOne
+    @JoinColumn(name = "chatroom")
+    @Column(name = "chatroom_no")
+    private String roomNo; //방번호
 
     @ManyToOne
-    @JoinColumn(name = "room_no")
-    private ChatRoom chatRoom; //방번호
-
-    @Column(name = "nickname")
-    private String sender;
-
-    @Column(name = "send_time")
-    private LocalDateTime sendTime;
-
-    @Column(name = "flag")
-    private Boolean flag;
+    @JoinColumn(name = "user")
+    @Column(name = "user_no")
+    private String sender; //보낸 사람
 
     @Column(name = "message")
     private String content; //메시지 내용
-
 }
