@@ -256,6 +256,7 @@ requestDto 예시
 <details>
 <summary>[MESSAGE] 채팅방 입장 </summary>
 <div markdown="1">
+  
 ### Request
 
 채팅 메소드는 `@MessageMapping` 사용, URL도 [http://가](http://가) 아닌 ws:// 사용함.
